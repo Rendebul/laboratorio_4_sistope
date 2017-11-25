@@ -17,7 +17,6 @@ int main(int argc, char **argv)
   char *nombre_salida2;
   char *archivo;
   int c;
-  bmp_file* data;
 
   opterr = 0;
 
@@ -71,6 +70,20 @@ int main(int argc, char **argv)
     abort();
   }
 
-  data = leerArchivo(archivo);
+  int alto, ancho;
+  Cabecera head;
+  FILE* file = fopen(archivo, "rb");
+  bit** Matrix_aux;
+  InfoCabecera info;
+  info = leerInfo(file);
+  esBMP(file,head,info);
+  alto = info.height;
+  ancho = info.width;
+   
+  Matrix_aux = crearMatriz(alto, ancho);
+  bit** Matrix = cargarImagen(file,Matrix_aux, alto, ancho);
+
+  
+  printf("Sali\n");
   return 0;
 }

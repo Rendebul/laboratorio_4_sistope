@@ -4,24 +4,35 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
-#include <pthread.h>
 
+typedef struct bit{
+    unsigned char RGB[3];
+}bit;
+ 
+typedef struct InfoCabecera{
+    unsigned int size;
+    int width,height;
+    unsigned short int planes;
+    unsigned short int bpp;
+    unsigned int compression;
+    unsigned int imagesize;
+    int xresolution,yresolution;
+    unsigned int colours;
+    unsigned int impcolours;
+}InfoCabecera;
 
+typedef struct Cabecera{
+    char type[2];
+    unsigned int size;
+    unsigned short int reserved1,reserved2;
+    unsigned int offset;
+}Cabecera;
 
-typedef struct bit
-{
-    int r;
-    int g;
-    int b;
-} bit;
-
-typedef struct bmp_file
-{
-    header head;
-    bit** bits;
-} bmp_file;
-
-bmp_file* leerArchivo(char *archivo);
-bit ** crearMatriz(LONG i, LONG j);
-bit ** ToBit(unsigned char *bitmap, LONG x, LONG y);
-unsigned char* swapper(unsigned char *bitmap,LONG size);
+bit** crearMatriz(int alto, int ancho);
+ 
+void esBMP(FILE* archivo, Cabecera head, InfoCabecera info);
+ 
+InfoCabecera leerInfo(FILE* archivo);
+ 
+bit** cargarImagen(FILE* archivo, bit** Matrix, int alto, int ancho);
+ 
